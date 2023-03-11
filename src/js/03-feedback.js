@@ -3,7 +3,7 @@ import throttle from 'lodash.throttle';
 const formEl = document.querySelector('.feedback-form');
 const inputEl = document.querySelector('form input');
 const textareaEl = document.querySelector('form textarea');
-const formDate = {};
+let formDate = {};
 const STORAGE_KEY = 'feedback';
 
 formEl.addEventListener('submit', onFormSubmit);
@@ -18,9 +18,11 @@ function onFormSubmit(event) {
     return alert('Fields must be filled in');
   }
 
-  localStorage.removeItem(STORAGE_KEY);
+  console.log(formDate);
 
+  localStorage.removeItem(STORAGE_KEY);
   event.currentTarget.reset();
+  formDate = {};
 }
 
 function onFormInput(event) {
@@ -34,17 +36,14 @@ function onFormInput(event) {
 
 function populateForm() {
   const savedForm = JSON.parse(localStorage.getItem(STORAGE_KEY));
-  try {
-    if (savedForm.email) {
-      inputEl.value = savedForm.email;
-      formDate.email = savedForm.email;
-    }
 
-    if (savedForm.message) {
-      textareaEl.value = savedForm.message;
-      formDate.message = savedForm.message;
-    }
-  } catch (error) {
-    console.log(error);
+  if (savedForm.email) {
+    inputEl.value = savedForm.email;
+    formDate.email = savedForm.email;
+  }
+
+  if (savedForm.message) {
+    textareaEl.value = savedForm.message;
+    formDate.message = savedForm.message;
   }
 }
